@@ -12,6 +12,7 @@ public struct DanceMove
 public class DanceMoveManager
 {
     List<DanceMove> danceMoves = new List<DanceMove>();
+    float timeSinceLastSpawn = 0;
     public DanceMoveManager()
     {
 
@@ -23,17 +24,30 @@ public class DanceMoveManager
         {
             DanceMove currentMove = danceMoves[i];
             currentMove.remainingTime -= Time.deltaTime;
-            if (currentMove.remainingTime < -5)
+            if (currentMove.remainingTime < -0.3f)
             {
                 danceMoves.RemoveAt(i);
                 i--;
             }
         }
+
+        timeSinceLastSpawn = timeSinceLastSpawn + Time.deltaTime;
+        SpawnMove();
     }
 
     private void SpawnMove()
     {
+        bool spawnRequired = false;
+        if (danceMoves.Count == 0)
+        {
+            spawnRequired = true;
+        }
+        spawnRequired = (timeSinceLastSpawn - 1.5f) * Random.value > 0.5f;
 
+        if (spawnRequired)
+        {
+
+        }
     }
 
     public List<Command> GetCurrentMoveRequirements()

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public List<Tribeman> tribemans = new List<Tribeman>();
     public int tribemanCount = 3;
 
-    public int godAnger = 0;
+    public float godAnger = 0;
     public int score = 0;
 
     public GuiManager guiManager;
@@ -39,11 +39,67 @@ public class GameManager : MonoBehaviour
         }
         CheckInput();
         CheckDanceMove();
+
+        godAnger = godAnger - Time.deltaTime;
 	}
 
     void CheckInput()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            tribemans[0].selected = !tribemans[0].selected;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            tribemans[1].selected = !tribemans[1].selected;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            tribemans[2].selected = !tribemans[2].selected;
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            foreach (Tribeman man in tribemans)
+            {
+                man.selected = true;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            foreach (Tribeman man in tribemans)
+            {
+                man.selected = false;
+            }
+        }
 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            foreach (Tribeman man in tribemans)
+            {
+                man.ReceiveCommand(Command.LeftHandUp);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            foreach (Tribeman man in tribemans)
+            {
+                man.ReceiveCommand(Command.RightHandUp);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            foreach (Tribeman man in tribemans)
+            {
+                man.ReceiveCommand(Command.LeftLegUp);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            foreach (Tribeman man in tribemans)
+            {
+                man.ReceiveCommand(Command.RightLegUp);
+            }
+        }
     }
 
     void CheckDanceMove()
