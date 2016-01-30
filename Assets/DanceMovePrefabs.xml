@@ -1,0 +1,10 @@
+<prefabs>
+	<prefab textureName="move_0" difficulty="0">
+		<commands>
+			<command id="0" name="LeftHandUp" />
+			<command id="0" name="LeftLegUp" />
+			<command id="2" name="RightHandUp" />
+			<command id="2" name="RightLegUp" />
+		</commands>
+	</prefab>
+</prefabs>

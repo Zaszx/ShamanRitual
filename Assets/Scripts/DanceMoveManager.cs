@@ -1,21 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
-public struct DanceMove
-{
-    public List<Command> requiredBodyStatuses = new List<Command>();
-    public Texture2D texture;
-    public float remainingTime;
-}
+using System.Xml;
 
 public class DanceMoveManager
 {
     List<DanceMove> danceMoves = new List<DanceMove>();
+    List<DanceMovePrefab> danceMovePrefabs = new List<DanceMovePrefab>();
     float timeSinceLastSpawn = 0;
     public DanceMoveManager()
     {
+        ReadPrefabs();
+    }
 
+    public void ReadPrefabs()
+    {
+        XmlDocument d = new XmlDocument();
+        string xmlFilePath = Application.dataPath + "/DanceMovePrefabs.xml";
+        d.Load(xmlFilePath);
+        XmlNode prefabsNode = d.FirstChild;
+        XmlNode prefabNode = prefabsNode.FirstChild;
+        while (prefabNode != null)
+        {
+            DanceMovePrefab newPrefab = new DanceMovePrefab();
+            newPrefab.Read(prefabNode);
+
+            danceMovePrefabs.Add(newPrefab);
+            prefabNode = prefabNode.NextSibling;
+        }
     }
 
     public void Tick()
@@ -46,13 +58,21 @@ public class DanceMoveManager
 
         if (spawnRequired)
         {
-
+            int prefabIndex = Random.Range(0, danceMovePrefabs.Count - 1);
+            DanceMove newDanceMove = new DanceMove(danceMovePrefabs[prefabIndex]);
+            danceMoves.Add(newDanceMove);
         }
     }
 
     public List<Command> GetCurrentMoveRequirements()
     {
-
+        for (int i = 0; i < danceMoves.Count; i++)
+        {
+            if (danceMoves[i].remainingTime < 0.01f && danceMoves[i].remainingTime > 0)
+            {
+                return danceMoves[i].prefab.requiredCommands;
+            }
+        }
         return null;
     }
 }

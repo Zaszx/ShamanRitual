@@ -1,26 +1,46 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 public class GameManager : MonoBehaviour 
 {
     public List<Tribeman> tribemans = new List<Tribeman>();
-    public int tribemanCount = 3;
-
     public float godAnger = 0;
     public int score = 0;
 
     public GuiManager guiManager;
     public DanceMoveManager danceMoveManager;
 
+    public static Command GetCommandFromString(string s)
+    {
+        if (s == "LeftHandUp")
+        {
+            return Command.LeftHandUp;
+        }
+        else if (s == "LeftLegUp")
+        {
+            return Command.LeftLegUp;
+        }
+        else if (s == "RightHandUp")
+        {
+            return Command.RightHandUp;
+        }
+        else if (s == "RightLegUp")
+        {
+            return Command.RightLegUp;
+        }
+        return Command.None;
+    }
+
 	void Start () 
     {
         guiManager = new GuiManager(this);
         danceMoveManager = new DanceMoveManager();
 
-        for (int i = 0; i < tribemanCount; i++)
+        for (int i = 0; i < 3; i++)
         {
-            GameObject tribemanObject = GameObject.Find("Tribaman_" + i);
+            GameObject tribemanObject = GameObject.Find("Tribeman_" + i);
             Tribeman newTribeman = new Tribeman(tribemanObject);
             tribemans.Add(newTribeman);
         }
@@ -104,6 +124,26 @@ public class GameManager : MonoBehaviour
 
     void CheckDanceMove()
     {
+        List<Command> requiredCommands = danceMoveManager.GetCurrentMoveRequirements();
+        if (requiredCommands != null)
+        {
+            bool success = true;
+            for (int i = 0; i < tribemans.Count; i++)
+            {
+                if (tribemans[i].bodyStatus != requiredCommands[i])
+                {
+                    success = false;
+                }
+            }
 
+            if (success)
+            {
+                score = score + 100;
+            }
+            else
+            {
+                godAnger = godAnger + 50;
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@ using System;
 [Flags]
 public enum Command : int
 {
+    None        = 0x00000000,
+
     LeftLegUp   = 0x00000001,
     RightLegUp  = 0x00000002,
     LeftHandUp  = 0x00000004,
