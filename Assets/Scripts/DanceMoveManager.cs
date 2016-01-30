@@ -30,6 +30,16 @@ public class DanceMoveManager
         }
     }
 
+    public void Render()
+    {
+        for (int i = 0; i < danceMoves.Count; i++)
+        {
+            DanceMove currentMove = danceMoves[i];
+            float danceMoveX = (currentMove.remainingTime / 8.0f) * Screen.width + 20;
+            GUI.DrawTexture(new Rect(danceMoveX, 30, 128, 64), currentMove.prefab.texture);
+        }
+    }
+
     public void Tick()
     {
         for (int i = 0; i < danceMoves.Count; i++ )
@@ -54,13 +64,18 @@ public class DanceMoveManager
         {
             spawnRequired = true;
         }
-        spawnRequired = (timeSinceLastSpawn - 1.5f) * Random.value > 0.5f;
+        if (timeSinceLastSpawn > 6.0f && Random.value > 0.0005f)
+        {
+            spawnRequired = true;
+        }
 
         if (spawnRequired)
         {
+            timeSinceLastSpawn = 0;
             int prefabIndex = Random.Range(0, danceMovePrefabs.Count - 1);
             DanceMove newDanceMove = new DanceMove(danceMovePrefabs[prefabIndex]);
             danceMoves.Add(newDanceMove);
+            Debug.Log("Spawned!");
         }
     }
 

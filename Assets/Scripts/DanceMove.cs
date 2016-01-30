@@ -40,7 +40,7 @@ public class DanceMove
 
     public DanceMove(DanceMovePrefab prefab)
     {
-        remainingTime = 5.0f;
+        remainingTime = 8.0f;
         this.prefab = prefab;
     }
 }

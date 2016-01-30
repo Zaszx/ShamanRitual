@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
 
     void Update() 
     {
+        danceMoveManager.Tick();
         foreach (Tribeman tribeman in tribemans)
         {
             tribeman.Tick();
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
         CheckDanceMove();
 
         godAnger = godAnger - Time.deltaTime;
+        godAnger = Mathf.Max(0, godAnger);
 	}
 
     void CheckInput()
